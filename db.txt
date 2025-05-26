@@ -1,0 +1,64 @@
+CREATE DATABASE crudJava;
+
+-- Criar tabela de Pessoa
+CREATE TABLE person (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    nm_person VARCHAR(100) NOT NULL,
+    tp_person VARCHAR(50),
+    nm_email VARCHAR(100),
+    nr_telephone VARCHAR(20)
+);
+
+-- Criar tabela de Documentos
+CREATE TABLE document (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    tipo VARCHAR(50),
+    numero VARCHAR(50),
+    person_id INT,
+    FOREIGN KEY (person_id) REFERENCES person(id) ON DELETE CASCADE
+);
+
+-- Criar tabela de Contatos
+CREATE TABLE contact (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    tipo VARCHAR(50),
+    valor VARCHAR(100),
+    person_id INT,
+    FOREIGN KEY (person_id) REFERENCES person(id) ON DELETE CASCADE
+);
+
+-- Criar tabela de Endereços
+CREATE TABLE address (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    logradouro VARCHAR(100),
+    numero VARCHAR(20),
+    bairro VARCHAR(50),
+    cidade VARCHAR(50),
+    estado VARCHAR(2),
+    cep VARCHAR(10),
+    person_id INT,
+    FOREIGN KEY (person_id) REFERENCES person(id) ON DELETE CASCADE
+);
+
+
+-- Inserir uma pessoa
+INSERT INTO person (id, nm_person, tp_person, nm_email, nr_telephone)
+VALUES (1, 'João Silva', 'Física', 'joao@example.com', '11999999999');
+
+-- Inserir documentos da pessoa
+INSERT INTO document (id, tipo, numero, person_id)
+VALUES 
+(1, 'CPF', '123.456.789-00', 1),
+(2, 'RG', '12.345.678-9', 1);
+
+-- Inserir contatos da pessoa
+INSERT INTO contact (id, tipo, valor, person_id)
+VALUES 
+(1, 'Celular', '11988887777', 1),
+(2, 'WhatsApp', '11977776666', 1);
+
+-- Inserir endereços da pessoa
+INSERT INTO address (id, logradouro, numero, bairro, cidade, estado, cep, person_id)
+VALUES 
+(1, 'Rua das Flores', '123', 'Centro', 'São Paulo', 'SP', '01010-000', 1),
+(2, 'Av. Paulista', '1000', 'Bela Vista', 'São Paulo', 'SP', '01310-100', 1);
