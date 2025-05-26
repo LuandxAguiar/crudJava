@@ -33,6 +33,8 @@ Este projeto é uma aplicação web desenvolvida em Java utilizando as tecnologi
 
 3. `search.xhtml` - Tela de busca
 ![image](https://github.com/user-attachments/assets/cb6ae23a-5427-4167-8bea-4a9eb6cd4daf)
+![image](https://github.com/user-attachments/assets/579cecbf-8593-4570-b6ea-7cdcd35dc1f0)
+
 
 
 Crie o banco de dados MySQL com o nome `crudJava`:
