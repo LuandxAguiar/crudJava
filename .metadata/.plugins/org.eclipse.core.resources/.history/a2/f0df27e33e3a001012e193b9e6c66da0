@@ -1,0 +1,77 @@
+package br.com.crud.dao;
+
+import java.util.List;
+
+import javax.persistence.EntityManager;
+import javax.persistence.TypedQuery;
+
+import br.com.crud.domain.Person;
+import br.com.crud.util.JPAUtil;
+
+public class PersonDAO {
+
+    public void save(Person person) {
+        EntityManager em = JPAUtil.getEntityManager();
+        try {
+            em.getTransaction().begin();
+            if (person.getId() == null) {
+                em.persist(person);
+            } else {
+                em.merge(person);
+            }
+            em.getTransaction().commit();
+        } catch (Exception e) {
+            em.getTransaction().rollback();
+            throw e;
+        } finally {
+            em.close();
+        }
+    }
+
+    public void delete(Person person) {
+        EntityManager em = JPAUtil.getEntityManager();
+        try {
+            em.getTransaction().begin();
+            Person managed = em.find(Person.class, person.getId());
+            if (managed != null) {
+                em.remove(managed);
+            }
+            em.getTransaction().commit();
+        } catch (Exception e) {
+            em.getTransaction().rollback();
+            throw e;
+        } finally {
+            em.close();
+        }
+    }
+
+    public Person findById(Long id) {
+        EntityManager em = JPAUtil.getEntityManager();
+        try {
+            return em.find(Person.class, id);
+        } finally {
+            em.close();
+        }
+    }
+
+    public List<Person> findAll() {
+        EntityManager em = JPAUtil.getEntityManager();
+        try {
+            TypedQuery<Person> query = em.createQuery("FROM Person", Person.class);
+            return query.getResultList();
+        } finally {
+            em.close();
+        }
+    }
+
+    public List<Person> findByName(String name) {
+        EntityManager em = JPAUtil.getEntityManager();
+        try {
+            TypedQuery<Person> query = em.createQuery("FROM Person p WHERE LOWER(p.nmPerson) LIKE :name", Person.class);
+            query.setParameter("name", "%" + name.toLowerCase() + "%");
+            return query.getResultList();
+        } finally {
+            em.close();
+        }
+    }
+}

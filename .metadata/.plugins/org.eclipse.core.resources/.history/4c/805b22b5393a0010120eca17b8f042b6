@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core">
+
+<h:head>
+	<title>Cadastro de Pessoa</title>
+</h:head>
+
+<h:body>
+	<h:form id="formPessoa">
+
+		<p:messages autoUpdate="true" closable="true" />
+
+		<p:panel header="Cadastro de Pessoa">
+			<h:panelGrid columns="2" cellpadding="5">
+
+				<h:outputLabel value="Nome:" />
+				<p:inputText value="#{personBean.person.nmPerson}" required="true" />
+
+				<h:outputLabel value="Tipo:" />
+				<p:inputText value="#{personBean.person.tpPerson}" />
+
+				<h:outputLabel value="E-mail:" />
+				<p:inputText value="#{personBean.person.nmEmail}" />
+
+				<h:outputLabel value="Telefone:" />
+				<p:inputText value="#{personBean.person.nrTelephone}" />
+
+			</h:panelGrid>
+
+			<p:commandButton value="Salvar" action="#{personBean.save}"
+				update="@form" />
+		</p:panel>
+
+		<br />
+
+		<p:panel header="Pesquisar">
+			<p:inputText value="#{personBean.searchName}"
+				placeholder="Digite o nome" />
+			<p:commandButton value="Buscar" action="#{personBean.search}"
+				update="@form" />
+		</p:panel>
+
+		<br />
+
+		<p:panel header="Pessoas Cadastradas">
+			<p:dataTable value="#{personBean.people}" var="p"
+				emptyMessage="Nenhum registro encontrado" paginator="true" rows="5"
+				editable="false" style="width: 100%">
+
+				<p:column headerText="Nome">
+                    #{p.nmPerson}
+                </p:column>
+
+				<p:column headerText="Tipo">
+                    #{p.tpPerson}
+                </p:column>
+
+				<p:column headerText="Email">
+                    #{p.nmEmail}
+                </p:column>
+
+				<p:column headerText="Telefone">
+                    #{p.nrTelephone}
+                </p:column>
+
+				<p:column headerText="Ações">
+					<p:commandButton icon="pi pi-pencil" title="Editar"
+						action="#{personBean.edit(p)}" update="@form" />
+
+					<p:commandButton icon="pi pi-trash" title="Excluir"
+						action="#{personBean.delete(p)}" update="@form"
+						styleClass="ui-button-danger" />
+				</p:column>
+
+			</p:dataTable>
+		</p:panel>
+
+	</h:form>
+</h:body>
+</html>

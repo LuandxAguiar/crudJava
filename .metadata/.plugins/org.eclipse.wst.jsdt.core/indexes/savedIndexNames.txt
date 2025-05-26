@@ -1,0 +1,9 @@
+INDEX VERSION 1.4+C:\Desenvolvimento\GitHub\crudJava\.metadata\.plugins\org.eclipse.wst.jsdt.core\indexes
+244849333.index
+150461842.index
+4224858654.index
+3278399026.index
+1571822070.index
+99980412.index
+99980412.index
+3150575729.index

@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core">
+
+<h:head>
+	<title>Cadastro de Pessoa</title>
+</h:head>
+
+<h:body>
+	<h:form id="formPessoa">
+
+		<p:messages autoUpdate="true" closable="true" />
+
+		<p:panel header="Cadastro de Pessoa">
+			<h:panelGrid columns="2" cellpadding="5">
+
+				<h:outputLabel value="Nome:" />
+				<p:inputText value="#{personBean.person.nmPerson}" required="true" />
+
+				<h:outputLabel value="Tipo:" />
+				<p:inputText value="#{personBean.person.tpPerson}" />
+
+				<h:outputLabel value="E-mail:" />
+				<p:inputText value="#{personBean.person.nmEmail}" />
+
+				<h:outputLabel value="Telefone:" />
+				<p:inputText value="#{personBean.person.nrTelephone}" />
+
+			</h:panelGrid>
+
+			<p:commandButton value="Salvar" action="#{personBean.save}"
+				update="@form" />
+		</p:panel>
+
+		<br />
+
+		<p:panel header="Pesquisar">
+			<p:inputText value="#{personBean.searchName}"
+				placeholder="Digite o nome" />
+			<p:commandButton value="Buscar" action="#{personBean.search}"
+				update="@form" />
+		</p:panel>
+
+		<br />
+
+		<p:panel header="Pessoas Cadastradas">
+			<p:dataTable value="#{personBean.people}" var="p"
+				emptyMessage="Nenhum registro encontrado" paginator="true" rows="5"
+				editable="false" style="width: 100%">
+
+				<p:column headerText="Nome">
+                    #{p.nmPerson}
+                </p:column>
+
+				<p:column headerText="Tipo">
+                    #{p.tpPerson}
+                </p:column>
+
+				<p:column headerText="Email">
+                    #{p.nmEmail}
+                </p:column>
+
+				<p:column headerText="Telefone">
+                    #{p.nrTelephone}
+                </p:column>
+
+				<p:column headerText="Ações">
+					<p:commandButton icon="pi pi-pencil" title="Editar"
+						action="#{personBean.edit(p)}" update="@form" />
+
+					<p:commandButton icon="pi pi-trash" title="Excluir"
+						action="#{personBean.delete(p)}" update="@form"
+						styleClass="ui-button-danger" />
+				</p:column>
+
+			</p:dataTable>
+		</p:panel>
+
+		<p:panel header="Documentos">
+			<h:panelGrid columns="4" cellpadding="5">
+
+				<h:outputLabel value="Tipo:" />
+				<p:inputText value="#{personBean.docTipo}" />
+
+				<h:outputLabel value="Número:" />
+				<p:inputText value="#{personBean.docNumero}" />
+
+				<f:facet name="footer">
+					<p:commandButton value="Adicionar Documento"
+						action="#{personBean.addDocumento}" update="@form"
+						icon="pi pi-plus" />
+				</f:facet>
+			</h:panelGrid>
+
+			<p:dataTable value="#{personBean.person.documents}" var="doc"
+				emptyMessage="Nenhum documento adicionado" style="margin-top:1rem;">
+
+				<p:column headerText="Tipo">
+	            #{doc.tipo}
+	        </p:column>
+
+				<p:column headerText="Número">
+	            #{doc.numero}
+	        </p:column>
+
+				<p:column headerText="Ações">
+					<p:commandButton icon="pi pi-trash"
+						action="#{personBean.removeDocumento(doc)}" update="@form"
+						styleClass="ui-button-danger" />
+				</p:column>
+			</p:dataTable>
+		</p:panel>
+
+		<p:panel header="Contatos">
+			<h:panelGrid columns="4" cellpadding="5">
+
+				<h:outputLabel value="Tipo:" />
+				<p:inputText value="#{personBean.contatoTipo}" />
+
+				<h:outputLabel value="Valor:" />
+				<p:inputText value="#{personBean.contatoValor}" />
+
+				<f:facet name="footer">
+					<p:commandButton value="Adicionar Contato"
+						action="#{personBean.addContato}" update="@form" icon="pi pi-plus" />
+				</f:facet>
+			</h:panelGrid>
+
+			<p:dataTable value="#{personBean.person.contacts}" var="c"
+				emptyMessage="Nenhum contato adicionado" style="margin-top:1rem;">
+
+				<p:column headerText="Tipo">
+            #{c.tipo}
+        </p:column>
+
+				<p:column headerText="Valor">
+            #{c.valor}
+        </p:column>
+
+				<p:column headerText="Ações">
+					<p:commandButton icon="pi pi-trash"
+						action="#{personBean.removeContato(c)}" update="@form"
+						styleClass="ui-button-danger" />
+				</p:column>
+			</p:dataTable>
+		</p:panel>
+
+		<p:panel header="Endereços">
+			<h:panelGrid columns="2" cellpadding="5">
+
+				<h:outputLabel value="Logradouro:" />
+				<p:inputText value="#{personBean.enderecoLogradouro}" />
+
+				<h:outputLabel value="Número:" />
+				<p:inputText value="#{personBean.enderecoNumero}" />
+
+				<h:outputLabel value="Bairro:" />
+				<p:inputText value="#{personBean.enderecoBairro}" />
+
+				<h:outputLabel value="Cidade:" />
+				<p:inputText value="#{personBean.enderecoCidade}" />
+
+				<h:outputLabel value="Estado:" />
+				<p:inputText value="#{personBean.enderecoEstado}" />
+
+				<h:outputLabel value="CEP:" />
+				<p:inputText value="#{personBean.enderecoCep}" />
+
+				<f:facet name="footer">
+					<p:commandButton value="Adicionar Endereço"
+						action="#{personBean.addEndereco}" update="@form"
+						icon="pi pi-plus" />
+				</f:facet>
+			</h:panelGrid>
+
+			<p:dataTable value="#{personBean.person.addresses}" var="e"
+				emptyMessage="Nenhum endereço adicionado" style="margin-top:1rem;">
+
+				<p:column headerText="Logradouro">
+            #{e.logradouro}
+        </p:column>
+
+				<p:column headerText="Número">
+            #{e.numero}
+        </p:column>
+
+				<p:column headerText="Bairro">
+            #{e.bairro}
+        </p:column>
+
+				<p:column headerText="Cidade">
+            #{e.cidade}
+        </p:column>
+
+				<p:column headerText="Estado">
+            #{e.estado}
+        </p:column>
+
+				<p:column headerText="CEP">
+            #{e.cep}
+        </p:column>
+
+				<p:column headerText="Ações">
+					<p:commandButton icon="pi pi-trash"
+						action="#{personBean.removeEndereco(e)}" update="@form"
+						styleClass="ui-button-danger" />
+				</p:column>
+			</p:dataTable>
+		</p:panel>
+	</h:form>
+</h:body>
+</html>

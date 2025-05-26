@@ -1,0 +1,247 @@
+package br.com.crud.bean;
+
+import java.io.Serializable;
+import java.util.List;
+
+import javax.annotation.PostConstruct;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
+import javax.faces.view.ViewScoped;
+import javax.inject.Named;
+
+import br.com.crud.dao.PersonDAO;
+import br.com.crud.domain.Address;
+import br.com.crud.domain.Contact;
+import br.com.crud.domain.Document;
+import br.com.crud.domain.Person;
+
+@Named
+@ViewScoped
+public class PersonBean implements Serializable {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private Person person;
+	private List<Person> people;
+	private boolean highlightSave = false;
+	private String searchName;
+	// doc
+	private String docTipo;
+	private String docNumero;
+	// contatos
+	private String contatoTipo;
+	private String contatoValor;
+	private PersonDAO dao = new PersonDAO();
+	// endereço
+	private String enderecoLogradouro;
+	private String enderecoNumero;
+	private String enderecoBairro;
+	private String enderecoCidade;
+	private String enderecoEstado;
+	private String enderecoCep;
+	
+	@PostConstruct
+	public void init() {
+	    try {
+	        person = new Person();
+	        people = dao.findAll(); 
+	    } catch (Exception e) {
+	        e.printStackTrace(); 
+	        throw new RuntimeException("Erro ao iniciar PersonBean: " + e.getMessage(), e);
+	    }
+	}
+	public void save() {
+		try {
+			dao.save(person);
+			FacesContext.getCurrentInstance().addMessage(null,
+					new FacesMessage(FacesMessage.SEVERITY_INFO, "Sucesso", "Pessoa salva com sucesso."));
+			people = dao.findAll();
+			person = new Person();
+		    highlightSave = false;
+
+		} catch (Exception e) {
+			FacesContext.getCurrentInstance().addMessage(null,
+					new FacesMessage(FacesMessage.SEVERITY_ERROR, "Erro", "Falha ao salvar: " + e.getMessage()));
+		}
+	}
+
+	public void delete(Person p) {
+		dao.delete(p);
+		people = dao.findAll();
+	}
+
+	public void edit(Person p) {
+	    this.person = dao.findByIdWithChildren(p.getId());
+	}
+
+	public void search() {
+		if (searchName != null && !searchName.trim().isEmpty()) {
+			people = dao.findByName(searchName);
+		} else {
+			people = dao.findAll();
+		}
+	}
+
+	public void addDocumento() {
+		Document doc = new Document();
+		highlightSave = true;
+		doc.setTipo(docTipo);
+		doc.setNumero(docNumero);
+		doc.setPerson(person);
+		person.getDocuments().add(doc);
+		docTipo = "";
+		docNumero = "";
+	}
+
+	public void removeDocumento(Document doc) {
+		person.getDocuments().remove(doc);
+	}
+
+	public void addContato() {
+		Contact contato = new Contact();
+		highlightSave = true;
+		contato.setTipo(contatoTipo);
+		contato.setValor(contatoValor);
+		contato.setPerson(person);
+		person.getContacts().add(contato);
+
+		contatoTipo = "";
+		contatoValor = "";
+	}
+
+	public void removeContato(Contact contato) {
+		person.getContacts().remove(contato);
+	}
+
+	public void addEndereco() {
+		Address endereco = new Address();
+		highlightSave = true;
+		endereco.setLogradouro(enderecoLogradouro);
+		endereco.setNumero(enderecoNumero);
+		endereco.setBairro(enderecoBairro);
+		endereco.setCidade(enderecoCidade);
+		endereco.setEstado(enderecoEstado);
+		endereco.setCep(enderecoCep);
+		endereco.setPerson(person);
+		person.getAddresses().add(endereco);
+
+		enderecoLogradouro = "";
+		enderecoNumero = "";
+		enderecoBairro = "";
+		enderecoCidade = "";
+		enderecoEstado = "";
+		enderecoCep = "";
+	}
+
+	public void removeEndereco(Address endereco) {
+		person.getAddresses().remove(endereco);
+	}
+	public boolean isHighlightSave() {
+	    return highlightSave;
+	}
+	// Getters e Setters
+	
+
+	public Person getPerson() {
+		return person;
+	}
+
+	public void setPerson(Person person) {
+		this.person = person;
+	}
+
+	public List<Person> getPeople() {
+		return people;
+	}
+
+	public String getSearchName() {
+		return searchName;
+	}
+
+	public void setSearchName(String searchName) {
+		this.searchName = searchName;
+	}
+
+	// Getters e Setters para docTipo e docNumero
+	public String getDocTipo() {
+		return docTipo;
+	}
+
+	public void setDocTipo(String docTipo) {
+		this.docTipo = docTipo;
+	}
+
+	public String getDocNumero() {
+		return docNumero;
+	}
+
+	public void setDocNumero(String docNumero) {
+		this.docNumero = docNumero;
+	}
+
+	public String getContatoTipo() {
+		return contatoTipo;
+	}
+
+	public void setContatoTipo(String contatoTipo) {
+		this.contatoTipo = contatoTipo;
+	}
+
+	public String getContatoValor() {
+		return contatoValor;
+	}
+
+	public void setContatoValor(String contatoValor) {
+		this.contatoValor = contatoValor;
+	}
+
+	public String getEnderecoLogradouro() {
+		return enderecoLogradouro;
+	}
+
+	public void setEnderecoLogradouro(String enderecoLogradouro) {
+		this.enderecoLogradouro = enderecoLogradouro;
+	}
+
+	public String getEnderecoNumero() {
+		return enderecoNumero;
+	}
+
+	public void setEnderecoNumero(String enderecoNumero) {
+		this.enderecoNumero = enderecoNumero;
+	}
+
+	public String getEnderecoBairro() {
+		return enderecoBairro;
+	}
+
+	public void setEnderecoBairro(String enderecoBairro) {
+		this.enderecoBairro = enderecoBairro;
+	}
+
+	public String getEnderecoCidade() {
+		return enderecoCidade;
+	}
+
+	public void setEnderecoCidade(String enderecoCidade) {
+		this.enderecoCidade = enderecoCidade;
+	}
+
+	public String getEnderecoEstado() {
+		return enderecoEstado;
+	}
+
+	public void setEnderecoEstado(String enderecoEstado) {
+		this.enderecoEstado = enderecoEstado;
+	}
+
+	public String getEnderecoCep() {
+		return enderecoCep;
+	}
+
+	public void setEnderecoCep(String enderecoCep) {
+		this.enderecoCep = enderecoCep;
+	}
+}

@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core">
+
+<h:head>
+	<title>Visualização de Pessoa</title>
+	<h:outputStylesheet library="primefaces"
+		name="primeicons/primeicons.css" />
+	<link rel="stylesheet"
+		href="https://unpkg.com/primeicons/primeicons.css" />
+	<style>
+body {
+	font-family: Arial, sans-serif;
+	background-color: #f4f6f8;
+	padding: 2rem;
+}
+
+.panel-space {
+	margin-bottom: 2rem;
+}
+</style>
+</h:head>
+<f:metadata>
+	<f:viewParam name="id" value="#{personBean.selectedId}" />
+	<f:event type="preRenderView" listener="#{personBean.loadPerson}" />
+</f:metadata>
+<h:body>
+	<h:form>
+		<p:panel header="Dados da Pessoa" styleClass="panel-space">
+			<p:panelGrid columns="2" columnClasses="label,value">
+				<h:outputText value="Nome:" />
+				<h:outputText value="#{personBean.person.nmPerson}" />
+
+				<h:outputText value="Tipo:" />
+				<h:outputText value="#{personBean.person.tpPerson}" />
+
+				<h:outputText value="Email:" />
+				<h:outputText value="#{personBean.person.nmEmail}" />
+
+				<h:outputText value="Telefone:" />
+				<h:outputText value="#{personBean.person.nrTelephone}" />
+			</p:panelGrid>
+		</p:panel>
+
+		<p:panel header="Documentos" styleClass="panel-space">
+			<p:dataTable value="#{personBean.person.documents}" var="doc"
+				emptyMessage="Nenhum documento">
+				<p:column headerText="Tipo">#{doc.tipo}</p:column>
+				<p:column headerText="Número">#{doc.numero}</p:column>
+			</p:dataTable>
+		</p:panel>
+
+		<p:panel header="Contatos" styleClass="panel-space">
+			<p:dataTable value="#{personBean.person.contacts}" var="c"
+				emptyMessage="Nenhum contato">
+				<p:column headerText="Tipo">#{c.tipo}</p:column>
+				<p:column headerText="Valor">#{c.valor}</p:column>
+			</p:dataTable>
+		</p:panel>
+
+		<p:panel header="Endereços" styleClass="panel-space">
+			<p:dataTable value="#{personBean.person.addresses}" var="e"
+				emptyMessage="Nenhum endereço">
+				<p:column headerText="Logradouro">#{e.logradouro}</p:column>
+				<p:column headerText="Número">#{e.numero}</p:column>
+				<p:column headerText="Bairro">#{e.bairro}</p:column>
+				<p:column headerText="Cidade">#{e.cidade}</p:column>
+				<p:column headerText="Estado">#{e.estado}</p:column>
+				<p:column headerText="CEP">#{e.cep}</p:column>
+			</p:dataTable>
+		</p:panel>
+
+		<p:commandButton value="Voltar" icon="pi pi-arrow-left"
+			onclick="history.back(); return false;" type="button"
+			styleClass="ui-button-secondary" />
+	</h:form>
+</h:body>
+</html>
